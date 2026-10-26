@@ -1,0 +1,2 @@
+# New app specification
+Record purpose, intended users, features and non-goals; independent repository and verified/proposed subdomain; frontend/backend stack; data models/migrations; authentication, authorization and identity mapping; storage and external services; API conventions; deployment and environment names; tests, backups and operations; launcher integration version/status. Link app implementation docs instead of duplicating them here.

@@ -1,0 +1,2 @@
+# Launcher design
+Responsive public directory with icon cards and availability labels. No search, favorites, login or invitation UI in v1. Menu uses a labelled disclosure region, native links, Tab navigation, arrow navigation, Escape to close and restore trigger focus, outside-click dismissal, visible focus and 44px trigger targets. Registry fetches omit credentials, have a ten-second timeout and expose loading, empty and retryable error states. App authorization remains server-side in each application.

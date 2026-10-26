@@ -1,0 +1,18 @@
+{
+  "name": "@ajoseph/app-launcher",
+  "version": "0.1.2",
+  "type": "module",
+  "exports": {
+    ".": "./index.tsx",
+    "./registry": "./registry.js"
+  },
+  "files": [
+    "index.tsx",
+    "registry.js",
+    "registry.d.ts"
+  ],
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}

@@ -1,0 +1,2 @@
+# Shared component
+See the root README for tarball release and upgrade commands. Source lives in packages/app-launcher, versioned independently. The launcher project and both app consumers use identical pinned artifact bytes. No application code moves into this repository. Consumers must allow the registry origin in connect-src CSP. No cross-origin credentials, identity tokens or user metadata are sent to the registry.

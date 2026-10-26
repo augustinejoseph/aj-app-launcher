@@ -1,0 +1,57 @@
+# Local-only orchestration. Existing PostgreSQL stays independently managed.
+name: aj-local
+services:
+  launcher:
+    build: { context: ., dockerfile: Dockerfile.local }
+    ports: ["127.0.0.1:3002:3000"]
+    env_file:
+      - path: ./.env
+    environment:
+      AJ_LOCAL_DEVELOPMENT: "true"
+      WATCHPACK_POLLING: "true"
+    volumes:
+      - .:/app
+      - launcher_modules:/app/node_modules
+      - launcher_next:/app/.next
+    networks: [local]
+  health:
+    build: { context: ../aj-health/aj-health-app, dockerfile: Dockerfile.local }
+    ports: ["127.0.0.1:3000:3000"]
+    env_file:
+      - path: ./.local/health.env
+        format: raw
+    environment:
+      NEXT_PUBLIC_AJ_LOCAL_DEVELOPMENT: "true"
+      NEXT_PUBLIC_AJ_REGISTRY_URL: http://localhost:3002/apps.json
+      WATCHPACK_POLLING: "true"
+    volumes:
+      - ../aj-health/aj-health-app:/app
+      - health_modules:/app/node_modules
+      - health_next:/app/.next
+    networks: [local]
+  journal:
+    build: { context: ../aj-journal, dockerfile: Dockerfile.local }
+    ports: ["127.0.0.1:3001:3000"]
+    env_file:
+      - path: ./.local/journal.env
+        format: raw
+    environment:
+      NEXT_PUBLIC_AJ_LOCAL_DEVELOPMENT: "true"
+      NEXT_PUBLIC_AJ_REGISTRY_URL: http://localhost:3002/apps.json
+      WATCHPACK_POLLING: "true"
+    volumes:
+      - ../aj-journal:/app
+      - journal_modules:/app/node_modules
+      - journal_next:/app/.next
+    networks: [local]
+volumes:
+  launcher_modules:
+  launcher_next:
+  health_modules:
+  health_next:
+  journal_modules:
+  journal_next:
+networks:
+  local:
+    external: true
+    name: aj-local

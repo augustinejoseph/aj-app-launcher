@@ -1,0 +1,2 @@
+# Domains and DNS
+Verify domain ownership and the current production origin for each app. Attach the launcher domain in Vercel, then apply only the exact record supplied by Vercel after explicit authorization. Verify TLS and `/apps.json` CORS. Preserve Health's current origin during authentication migration: IndexedDB, local drafts, cookies and service workers belong to that origin. A future origin move requires a separate export/sync and device recovery plan.

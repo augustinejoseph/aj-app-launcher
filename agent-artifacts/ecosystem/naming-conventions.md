@@ -1,0 +1,2 @@
+# Naming
+Root domain `ajoseph.dev`; launcher `apps.ajoseph.dev`; proposed product origins `<app>.ajoseph.dev`. Independent repository and Vercel project `aj-<app>`, Neon project `aj-<app>`, PostgreSQL DB `aj_<app>`, optional private R2 bucket `aj-<app>-media`. Shared Google project `aj-personal-platform` is proposed. Existing resource names must be inventoried before renaming. Local repositories currently live under aj_series; do not relocate them merely to match a suggested ~/Projects convention.
