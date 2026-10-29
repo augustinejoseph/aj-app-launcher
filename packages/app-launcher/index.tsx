@@ -90,6 +90,7 @@ export function AppLauncher({
       style={{
         position: "relative",
         display: "inline-block",
+        flexShrink: 0,
         color: "inherit",
       }}
       onKeyDown={(event) => {
@@ -126,6 +127,12 @@ export function AppLauncher({
         .aj-spaces-panel a.aj-space:hover svg { transform: translateY(-2px); }
         .aj-space svg { transition: transform .18s ease; }
         .aj-spaces-panel, .aj-spaces-panel * { box-sizing: border-box; }
+        @media (max-width: 640px) {
+          .aj-spaces-trigger { width: 44px; height: 44px; min-width: 44px !important; padding: 0 !important; border-radius: 14px !important; }
+          .aj-spaces-trigger > span { display: none; }
+          .aj-spaces-trigger > svg { width: 20px; height: 20px; flex-shrink: 0; }
+          .aj-spaces-panel { position: fixed !important; top: auto !important; bottom: 16px; right: 16px !important; width: calc(100vw - 32px) !important; max-height: calc(100dvh - 32px); overflow-y: auto; padding-bottom: max(12px, env(safe-area-inset-bottom)) !important; }
+        }
         @media (prefers-reduced-motion: reduce) { .aj-space svg { transition: none; } }
       `}</style>
       <button
