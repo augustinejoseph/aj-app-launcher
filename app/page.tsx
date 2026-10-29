@@ -1,5 +1,6 @@
 import { validateRegistry } from "@ajoseph/app-launcher/registry";
 import { AppIcon, AppLauncher } from "@ajoseph/app-launcher";
+import { InstallApp } from "./install-app";
 
 function AppArtwork({ health }: { health: boolean }) {
   return (
@@ -31,7 +32,7 @@ export default function Page() {
     <main>
       <header className="site-header">
         <a className="brand" href="/" aria-label="AJ applications home"><span className="brand-mark">aj<span>.</span></span><span className="brand-label">A PERSONAL COLLECTION</span></a>
-        <div className="header-actions"><a className="directory-link" href="#applications">Your applications <span>↙</span></a><AppLauncher currentApp="launcher" registryUrl="/apps.json" allowLocalhost={local} /></div>
+        <div className="header-actions"><a className="directory-link" href="#applications">Your applications <span>↙</span></a><InstallApp /><AppLauncher currentApp="launcher" registryUrl="/apps.json" allowLocalhost={local} /></div>
       </header>
       <section className="intro">
         <div className="intro-copy"><p className="eyebrow"><span /> SPACE FOR WHAT MATTERS</p><h1>A little more intention.<br /><em>A space for you.</em></h1><p className="intro-description">Thoughtful tools for your everyday life.<br />Take care of yourself. Make room to reflect.</p></div>

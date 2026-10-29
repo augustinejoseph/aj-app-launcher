@@ -8,7 +8,9 @@ The initial entries are unverified and intentionally have no URLs. Verify the re
 
 ## Install as an app
 
-The directory is an installable PWA with standalone display and AJ icons. On HTTPS (or localhost), use your browser's install option; on iPhone or iPad, use Safari's Share → Add to Home Screen.
+The directory is an installable PWA with standalone display and AJ icons. Use **Install app** in the header: it opens the native install prompt when the browser provides one, or shows instructions for your browser. On iPhone or iPad, use Safari's Share → Add to Home Screen; on Mac Safari, use File → Add to Dock. The button is hidden in standalone mode and after installation.
+
+Installation requires HTTPS or localhost on the same device. Opening an HTTP LAN address (for example, `http://192.168.x.x:3000` on your phone) does not qualify. Browsers control the address-bar install icon and automatic promotion; they may suppress them for an already installed app, after dismissal, in private browsing, or until their engagement requirements are met. Inspect Application → Manifest and Service Workers in Chrome developer tools to diagnose a missing native prompt.
 
 The service worker runs in production builds only (`npm run build` then `npm start`). After one online visit, offline launches show a retry page. The directory and `/apps.json` remain network-only, and linked applications still require their own connectivity. To check locally, visit the production server, wait for the service worker to activate in browser developer tools, switch Network to Offline, and reload. Bump the cache version in `public/sw.js` when changing the offline page.
 

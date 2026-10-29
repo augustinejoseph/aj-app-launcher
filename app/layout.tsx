@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "AJ — Applications",
   description: "The AJ personal application directory.",
   applicationName: "AJ Applications",
+  manifest: "/manifest.webmanifest",
   appleWebApp: { capable: true, title: "AJ Apps", statusBarStyle: "default" },
   icons: { icon: "/icons/icon-192.png", apple: "/icons/apple-touch-icon.png" },
 };
