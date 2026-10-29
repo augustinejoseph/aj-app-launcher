@@ -3,26 +3,22 @@ import { useEffect, useId, useRef, useState } from "react";
 import { validateRegistry, type Registry, type AppEntry } from "./registry.js";
 export const DEFAULT_REGISTRY_URL = "https://apps.ajoseph.dev/apps.json";
 export function AppIcon({ icon }: { icon: AppEntry["icon"] }) {
+  const health = icon === "heart-pulse";
   return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.7"
-      aria-hidden="true"
-    >
-      {icon === "heart-pulse" ? (
-        <>
-          <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z" />
-          <path d="M3 12h5l2-4 4 8 2-4h5" />
-        </>
-      ) : (
-        <>
-          <path d="M12 5v16M3 3h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5v16h-5a4 4 0 0 0-4 2 4 4 0 0 0-4-2H3Z" />
-        </>
-      )}
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      <rect x="1" y="1" width="46" height="46" rx="14" fill={health ? "#e6eddf" : "#f1e6d5"} />
+      <rect x="1.5" y="1.5" width="45" height="45" rx="13.5" stroke={health ? "#526747" : "#916b44"} strokeOpacity=".14" />
+      {health ? <>
+        <path d="M24 35s-13-7.6-13-15a7 7 0 0 1 13-3.6A7 7 0 0 1 37 20c0 7.4-13 15-13 15Z" fill="#526747" />
+        <path d="M14 24h6l2.5-6 4 12 2.5-6h5" stroke="#f5f8ef" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="36" cy="12" r="3" fill="#a8ba85" />
+      </> : <>
+        <path d="M14 11h18a3 3 0 0 1 3 3v22H16a4 4 0 0 1-4-4V13a2 2 0 0 1 2-2Z" fill="#916b44" />
+        <path d="M18 11h14a3 3 0 0 1 3 3v18H18V11Z" fill="#fff9ed" />
+        <path d="M18 32h17v4H16a2 2 0 0 1 0-4h2Z" fill="#d8c3a1" />
+        <path d="M23 19h7m-7 5h5" stroke="#b99a6d" strokeWidth="1.5" strokeLinecap="round" />
+        <path d="M29 11v9l-2-1.5-2 1.5v-9" fill="#b27052" />
+      </>}
     </svg>
   );
 }
@@ -123,7 +119,17 @@ export function AppLauncher({
         }
       }}
     >
+      <style>{`
+        .aj-spaces-trigger:hover { box-shadow: 0 2px 8px #17211012; }
+        .aj-spaces-trigger:focus-visible, .aj-spaces-panel a:focus-visible, .aj-spaces-panel button:focus-visible { outline: 2px solid #526747; outline-offset: 3px; }
+        .aj-spaces-panel a.aj-space:hover { background: #eef1e7 !important; }
+        .aj-spaces-panel a.aj-space:hover svg { transform: translateY(-2px); }
+        .aj-space svg { transition: transform .18s ease; }
+        .aj-spaces-panel, .aj-spaces-panel * { box-sizing: border-box; }
+        @media (prefers-reduced-motion: reduce) { .aj-space svg { transition: none; } }
+      `}</style>
       <button
+        className="aj-spaces-trigger"
         ref={button}
         type="button"
         aria-label="Open application directory"
@@ -131,15 +137,21 @@ export function AppLauncher({
         aria-controls={id}
         onClick={() => setOpen(!open)}
         style={{
-          minWidth: 44,
+          minWidth: 88,
           minHeight: 44,
-          border: "1px solid currentColor",
+          border: "1px solid color-mix(in srgb, currentColor 18%, transparent)",
           borderRadius: 12,
-          background: "transparent",
+          background: open ? "color-mix(in srgb, currentColor 10%, transparent)" : "color-mix(in srgb, currentColor 4%, transparent)",
           color: "inherit",
           cursor: "pointer",
-          display: "grid",
-          placeItems: "center",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 9,
+          padding: "0 13px",
+          fontFamily: "inherit",
+          fontSize: 12,
+          fontWeight: 600,
         }}
       >
         <svg
@@ -149,15 +161,16 @@ export function AppLauncher({
           fill="currentColor"
           aria-hidden="true"
         >
-          {[3, 10, 17].flatMap((x) =>
-            [3, 10, 17].map((y) => (
-              <circle key={`${x}-${y}`} cx={x} cy={y} r="1.6" />
-            )),
-          )}
+          <rect x="2" y="2" width="6" height="6" rx="2" />
+          <rect x="12" y="2" width="6" height="6" rx="2" opacity=".5" />
+          <rect x="2" y="12" width="6" height="6" rx="2" opacity=".5" />
+          <rect x="12" y="12" width="6" height="6" rx="2" />
         </svg>
+        <span>Apps</span>
       </button>
       {open && (
         <div
+          className="aj-spaces-panel"
           ref={panel}
           id={id}
           role="region"
@@ -168,15 +181,20 @@ export function AppLauncher({
             right: 0,
             top: "calc(100% + 8px)",
             width: "min(320px, calc(100vw - 32px))",
-            padding: 16,
-            borderRadius: 16,
-            background: "var(--surface, var(--paper, #181a20))",
-            color: "var(--ink, #f4f4f5)",
-            border: "1px solid var(--line, #555)",
-            boxShadow: "0 16px 48px #0006",
+            padding: 12,
+            borderRadius: 22,
+            background: "#fffdf8",
+            color: "#292d28",
+            border: "1px solid #e1e3d8",
+            boxShadow: "0 20px 60px #17211024, 0 3px 10px #1721100a",
+            fontFamily: "Arial, Helvetica, sans-serif",
             zIndex: 1000,
           }}
         >
+          <div style={{ padding: "10px 10px 16px", borderBottom: "1px solid #e8eadf", marginBottom: 8 }}>
+            <div style={{ fontSize: 10, letterSpacing: "0.16em", color: "#747e69", marginBottom: 6 }}>THE AJ COLLECTION</div>
+            <div style={{ fontFamily: "Georgia, serif", fontSize: 22 }}>Your personal spaces</div>
+          </div>
           {!registry && !error && <p role="status">Loading applications…</p>}
           {error && (
             <div role="alert">
@@ -190,20 +208,20 @@ export function AppLauncher({
           <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 8 }}>
             {apps.map((app) => {
               const content = <>
-                <span style={{ display: "grid", placeItems: "center", width: 52, height: 52, borderRadius: 16,
-                  background: app.icon === "heart-pulse" ? "#e8eddf" : "#eee7db",
-                  color: app.icon === "heart-pulse" ? "#526747" : "#82735d" }}><AppIcon icon={app.icon} /></span>
+                <span style={{ display: "grid", placeItems: "center", width: 64, height: 64 }}><AppIcon icon={app.icon} /></span>
                 <span>{app.name}</span>
+                <span style={{ fontSize: 10, color: "#747e69", fontWeight: 400 }}>{app.status === "unverified" ? "Deployment not verified" : app.status !== "available" ? app.status : currentApp === app.id ? "· Current app" : "Open space ↗"}</span>
               </>;
               const style = { display: "flex", flexDirection: "column" as const, alignItems: "center",
-                justifyContent: "center", gap: 12, padding: "20px 8px", borderRadius: 12, minHeight: 116,
+                justifyContent: "center", gap: 7, padding: "16px 8px", borderRadius: 14, minHeight: 142,
                 color: "inherit", textDecoration: "none", fontSize: 13, fontWeight: 500, textAlign: "center" as const,
                 background: currentApp === app.id ? "color-mix(in srgb, currentColor 6%, transparent)" : "transparent" };
               return app.status === "available" && app.url ? (
-                <a key={app.id} href={app.url} style={style} aria-current={currentApp === app.id ? "page" : undefined}>{content}</a>
+                <a className="aj-space" key={app.id} href={app.url} aria-label={`${app.name}${currentApp === app.id ? " · Current app" : ""}`} style={style} aria-current={currentApp === app.id ? "page" : undefined}>{content}</a>
               ) : <div key={app.id} style={style} aria-disabled="true">{content}</div>;
             })}
           </div>
+          <a href="https://apps.ajoseph.dev/" style={{ display: "block", marginTop: 8, borderTop: "1px solid #e8eadf", padding: "14px 10px 4px", fontSize: 12, color: "#526747", textDecoration: "none" }}>All applications ↗</a>
         </div>
       )}
     </div>

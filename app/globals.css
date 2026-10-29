@@ -4,3 +4,6 @@
 @media(max-width:800px){main{padding:0 32px}.brand-label{display:none}.intro-aside{width:120px}.intro-aside .asterisk{font-size:70px}.app-category{font-size:7px;letter-spacing:1px}.card-content{padding:22px 19px}.card-bottom{flex-wrap:wrap}.intro{padding:60px 0}h1{font-size:48px}}
 @media(max-width:580px){main{padding:0 22px}.site-header{height:84px}.brand-mark{font-size:41px}.directory-link{display:none}.intro{padding:48px 0 39px}.intro-aside{display:none}h1{font-size:43px;letter-spacing:-1.9px}.eyebrow{font-size:8px;letter-spacing:1.6px;margin-bottom:22px}.intro-description{font-size:13px;margin-top:20px}.section-heading>span{font-size:7px;letter-spacing:1px}.cards{grid-template-columns:1fr;gap:20px}.app-art{height:200px}.card-content{padding:24px}.app-category{font-size:8px}.card-bottom{flex-wrap:nowrap}.collection-note{padding:28px 0}.collection-note p span{margin-top:5px}footer{flex-wrap:wrap;gap:15px}.footer-end{display:none}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important}}
+
+/* Shared collection artwork owns its tile and color treatment. */
+.app-icon,.journal .app-icon{width:44px;height:44px;border:0;background:transparent;border-radius:14px}.app-icon svg{width:44px;height:44px}
