@@ -6,6 +6,12 @@ Use Node 24. Copy `.env.example` to `.env` and edit `AJ_APPS_CONFIG`, a single J
 
 The initial entries are unverified and intentionally have no URLs. Verify the real app deployment and owner login before setting its HTTPS URL and `status: available`. Proposed domains are not evidence of deployment.
 
+## Install as an app
+
+The directory is an installable PWA with standalone display and AJ icons. On HTTPS (or localhost), use your browser's install option; on iPhone or iPad, use Safari's Share → Add to Home Screen.
+
+The service worker runs in production builds only (`npm run build` then `npm start`). After one online visit, offline launches show a retry page. The directory and `/apps.json` remain network-only, and linked applications still require their own connectivity. To check locally, visit the production server, wait for the service worker to activate in browser developer tools, switch Network to Offline, and reload. Bump the cache version in `public/sw.js` when changing the offline page.
+
 ## Package releases
 The package lives in `packages/app-launcher`. Run `npm pack ./packages/app-launcher --pack-destination ./vendor`. Copy the resulting versioned tarball into each consumer's `vendor/`, pin it using `file:vendor/<filename>`, and run `npm install`. Commit the package source, tarball and lockfiles. Consumers need `transpilePackages: ['@ajoseph/app-launcher']` in Next config because this release ships TypeScript source. Other React build tools must transpile this dependency. This avoids a private package registry; release tarballs can later be hosted in GitHub Releases.
 
