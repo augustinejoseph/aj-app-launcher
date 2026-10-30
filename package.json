@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@ajoseph/app-launcher": "file:vendor/ajoseph-app-launcher-0.1.4.tgz",
+    "@ajoseph/app-launcher": "file:vendor/ajoseph-app-launcher-0.1.5.tgz",
     "next": "^16.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"

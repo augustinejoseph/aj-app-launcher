@@ -26,10 +26,12 @@ export function AppLauncher({
   currentApp,
   registryUrl = DEFAULT_REGISTRY_URL,
   allowLocalhost = false,
+  iconOnly = false,
 }: {
   currentApp: string;
   registryUrl?: string;
   allowLocalhost?: boolean;
+  iconOnly?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const [registry, setRegistry] = useState<Registry | null>(null);
@@ -123,7 +125,9 @@ export function AppLauncher({
       <style>{`
         .aj-spaces-trigger:hover { box-shadow: 0 2px 8px #17211012; }
         .aj-spaces-trigger:focus-visible, .aj-spaces-panel a:focus-visible, .aj-spaces-panel button:focus-visible { outline: 2px solid #526747; outline-offset: 3px; }
-        .aj-spaces-panel a.aj-space:hover { background: #eef1e7 !important; }
+        .aj-spaces-panel a.aj-space:hover { background: light-dark(#eef1e7, #30352e) !important; }
+        .aj-spaces-icon-only > span { display: none; }
+        .aj-spaces-icon-only { min-width: 44px !important; width: 44px; padding: 0 !important; }
         .aj-spaces-panel a.aj-space:hover svg { transform: translateY(-2px); }
         .aj-space svg { transition: transform .18s ease; }
         .aj-spaces-panel, .aj-spaces-panel * { box-sizing: border-box; }
@@ -131,12 +135,12 @@ export function AppLauncher({
           .aj-spaces-trigger { width: 44px; height: 44px; min-width: 44px !important; padding: 0 !important; border-radius: 14px !important; }
           .aj-spaces-trigger > span { display: none; }
           .aj-spaces-trigger > svg { width: 20px; height: 20px; flex-shrink: 0; }
-          .aj-spaces-panel { position: fixed !important; top: auto !important; bottom: 16px; right: 16px !important; width: calc(100vw - 32px) !important; max-height: calc(100dvh - 32px); overflow-y: auto; padding-bottom: max(12px, env(safe-area-inset-bottom)) !important; }
+          .aj-spaces-panel { max-width: calc(100vw - 32px); max-height: calc(100dvh - 100px); overflow-y: auto; }
         }
         @media (prefers-reduced-motion: reduce) { .aj-space svg { transition: none; } }
       `}</style>
       <button
-        className="aj-spaces-trigger"
+        className={`aj-spaces-trigger${iconOnly ? " aj-spaces-icon-only" : ""}`}
         ref={button}
         type="button"
         aria-label="Open application directory"
@@ -190,18 +194,14 @@ export function AppLauncher({
             width: "min(320px, calc(100vw - 32px))",
             padding: 12,
             borderRadius: 22,
-            background: "#fffdf8",
-            color: "#292d28",
-            border: "1px solid #e1e3d8",
+            background: "light-dark(#fffdf8, #20231f)",
+            color: "light-dark(#292d28, #f2f4ef)",
+            border: "1px solid light-dark(#e1e3d8, #41473d)",
             boxShadow: "0 20px 60px #17211024, 0 3px 10px #1721100a",
             fontFamily: "Arial, Helvetica, sans-serif",
             zIndex: 1000,
           }}
         >
-          <div style={{ padding: "10px 10px 16px", borderBottom: "1px solid #e8eadf", marginBottom: 8 }}>
-            <div style={{ fontSize: 10, letterSpacing: "0.16em", color: "#747e69", marginBottom: 6 }}>THE AJ COLLECTION</div>
-            <div style={{ fontFamily: "Georgia, serif", fontSize: 22 }}>Your personal spaces</div>
-          </div>
           {!registry && !error && <p role="status">Loading applications…</p>}
           {error && (
             <div role="alert">
@@ -217,10 +217,10 @@ export function AppLauncher({
               const content = <>
                 <span style={{ display: "grid", placeItems: "center", width: 64, height: 64 }}><AppIcon icon={app.icon} /></span>
                 <span>{app.name}</span>
-                <span style={{ fontSize: 10, color: "#747e69", fontWeight: 400 }}>{app.status === "unverified" ? "Deployment not verified" : app.status !== "available" ? app.status : currentApp === app.id ? "· Current app" : "Open space ↗"}</span>
+                {app.status !== "available" && <span style={{ fontSize: 10, opacity: .7 }}>{app.status === "unverified" ? "Deployment not verified" : app.status}</span>}
               </>;
               const style = { display: "flex", flexDirection: "column" as const, alignItems: "center",
-                justifyContent: "center", gap: 7, padding: "16px 8px", borderRadius: 14, minHeight: 142,
+                justifyContent: "center", gap: 7, padding: "16px 8px", borderRadius: 14, minHeight: 112,
                 color: "inherit", textDecoration: "none", fontSize: 13, fontWeight: 500, textAlign: "center" as const,
                 background: currentApp === app.id ? "color-mix(in srgb, currentColor 6%, transparent)" : "transparent" };
               return app.status === "available" && app.url ? (
@@ -228,7 +228,7 @@ export function AppLauncher({
               ) : <div key={app.id} style={style} aria-disabled="true">{content}</div>;
             })}
           </div>
-          <a href="https://apps.ajoseph.dev/" style={{ display: "block", marginTop: 8, borderTop: "1px solid #e8eadf", padding: "14px 10px 4px", fontSize: 12, color: "#526747", textDecoration: "none" }}>All applications ↗</a>
+          <a href="https://apps.ajoseph.dev/" style={{ display: "block", marginTop: 8, borderTop: "1px solid light-dark(#e8eadf, #41473d)", padding: "14px 10px 4px", fontSize: 12, color: "inherit", textDecoration: "none" }}>All applications ↗</a>
         </div>
       )}
     </div>
