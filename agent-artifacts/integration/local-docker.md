@@ -36,3 +36,7 @@ All three app containers are running. Launcher and registry return 200; Health s
 Health migration 0014 was applied locally after saving .local/health-before-google.dump and verifying its restoration. Existing table fingerprints and both original user IDs match before and after migration, and match the restored backup. The temporary restore-check database was removed; the backup is retained. No hosted database or Vercel configuration was modified.
 
 The first container build exhausted available disk space. Approved npm cache cleanup and Docker restart recovered the environment. Database availability and record preservation were verified afterward. Local images now remove npm download caches during construction.
+
+## AJ Notes (optional profile)
+
+Notes uses port 3003 and its own `aj_notes_local` PostgreSQL database. Configure `../aj-notes/.env`, rerun preparation, create the empty Notes database on the local PostgreSQL service, then use `docker compose -f compose.local.yaml --profile notes run --rm notes npm run db:migrate` and `docker compose -f compose.local.yaml --profile notes up -d --build notes`. Preparation generates ignored `.local/notes.env` only when Notes configuration exists. Register the Notes Google callback at `http://localhost:3003/api/auth/callback/google`. See `../aj-notes/README.md` for setup and acceptance details. Existing application databases and volumes are unchanged.

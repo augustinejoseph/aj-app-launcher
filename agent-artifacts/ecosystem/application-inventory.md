@@ -6,3 +6,5 @@
 | Journal | https://github.com/augustinejoseph/aj-journal | Next.js / Auth.js / Drizzle | Neon / private R2 configured by app | Existing owner-only Google | Live origin unverified |
 
 Neither app is marked available in the public registry until its actual origin and readiness are verified. No Ledger or Focus entries. Existing Health and Journal user data is not inspected or copied into the launcher. App-specific models, APIs, migrations, features and operational limits stay documented in their own agent-artifacts hubs.
+
+| Notes | Local `aj-notes` (remote not provisioned) | Next.js / BlockNote / Auth.js / Drizzle | Dedicated Neon planned; Docker PostgreSQL locally; images in PostgreSQL; IndexedDB offline | Verified Google owner only | Local port 3003; production URL unverified |

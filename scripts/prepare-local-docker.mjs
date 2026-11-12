@@ -1,5 +1,5 @@
 // Generates ignored local-only configuration. Never prints credentials.
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { parseEnv } from 'node:util';
 import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
@@ -39,7 +39,21 @@ const serialize = entries => Object.entries(entries).map(([key,value]) => {
 writeFileSync(resolve(root, '.local/health.env'), serialize(health), { mode: 0o600 });
 writeFileSync(resolve(root, '.local/journal.env'), `APP_CONFIG=${JSON.stringify(journal)}\n`, { mode: 0o600 });
 const registry = JSON.parse(parseEnv(readFileSync(resolve(root, '.env'), 'utf8')).AJ_APPS_CONFIG);
-for (const app of registry.apps) { app.url = app.id === 'health' ? 'http://localhost:3000' : 'http://localhost:3001'; app.status = 'available'; }
+const notesPath = resolve(root, '../aj-notes/.env');
+let notesConfigured = false;
+if (existsSync(notesPath)) {
+  const notes = JSON.parse(parseEnv(readFileSync(notesPath, 'utf8')).APP_CONFIG);
+  const notesDb = new URL(db); notesDb.pathname = '/aj_notes_local';
+  notes.DATABASE_URL = notesDb.toString(); notes.AUTH_URL = 'http://localhost:3003'; notes.AUTH_TRUST_HOST = 'true';
+  notes.ALLOWED_EMAIL = owner;
+  writeFileSync(resolve(root, '.local/notes.env'), `APP_CONFIG=${JSON.stringify(notes)}\n`, { mode: 0o600 });
+  notesConfigured = true;
+}
+if (!registry.apps.some(app => app.id === 'notes')) registry.apps.push({id:'notes',name:'AJ Notes',description:'Private notes, diagrams, and AI summaries.',url:null,repository:'aj-notes',icon:'book-open',status:'unverified',enabled:true});
+const localUrls = {health:'http://localhost:3000',journal:'http://localhost:3001',...(notesConfigured ? {notes:'http://localhost:3003'} : {})};
+for (const app of registry.apps) {
+  if (localUrls[app.id]) { app.url = localUrls[app.id]; app.status = 'available'; }
+}
 const launcherEnv = parseEnv(readFileSync(resolve(root, '.env'), 'utf8'));
 launcherEnv.AJ_APPS_CONFIG = JSON.stringify(registry);
 launcherEnv.AJ_LOCAL_DEVELOPMENT = 'true';

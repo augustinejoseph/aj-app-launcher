@@ -44,7 +44,25 @@ services:
       - journal_modules:/app/node_modules
       - journal_next:/app/.next
     networks: [local]
+  notes:
+    profiles: [notes]
+    build: { context: ../aj-notes, dockerfile: Dockerfile.local }
+    ports: ["127.0.0.1:3003:3003"]
+    env_file:
+      - path: ./.local/notes.env
+        format: raw
+    environment:
+      NEXT_PUBLIC_AJ_LOCAL_DEVELOPMENT: "true"
+      NEXT_PUBLIC_AJ_REGISTRY_URL: http://localhost:3002/apps.json
+      WATCHPACK_POLLING: "true"
+    volumes:
+      - ../aj-notes:/app
+      - notes_modules:/app/node_modules
+      - notes_next:/app/.next
+    networks: [local]
 volumes:
+  notes_modules:
+  notes_next:
   launcher_modules:
   launcher_next:
   health_modules:
