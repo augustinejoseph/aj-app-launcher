@@ -10,3 +10,5 @@ Canonical cross-app architecture and integration decisions. App implementation d
 - [App specification](templates/new-app-spec.md), [security](templates/app-security-checklist.md), [integration](templates/app-integration-checklist.md)
 
 [Local Docker development and Vercel production](integration/local-docker.md).
+
+[Notes workspace integration](integration/notes-workspace.md).
